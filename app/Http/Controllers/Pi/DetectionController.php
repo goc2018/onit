@@ -9,6 +9,6 @@ class DetectionController extends Controller
 {
     public function create()
     {
-    	return ['foo' => 1235];
+    	return ['foo' => 126];
     }
 }
