@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use OnIt\Auth\Exception\FailedLoginException;
 
 class Handler extends ExceptionHandler
 {
@@ -48,11 +49,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-    	return response()->json([
-		    'success' => false,
-		    'message' => $exception->getMessage()
-	    ]);
-
+    	if ($exception instanceof FailedLoginException)
+	    {
+		    return response()->json([
+			    'success' => false,
+			    'message' => $exception->getMessage()
+		    ]);
+	    }
 
         return parent::render($request, $exception);
     }
