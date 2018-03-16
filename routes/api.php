@@ -24,5 +24,5 @@ Route::prefix('pi')->group(function ()
 
 Route::prefix('phone')->group(function ()
 {
-	Route::post('/detection', 'Pi\DetectionController@create');
+	Route::get('/registration', 'Phone\AuthController@registration');
 });
