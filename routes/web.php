@@ -14,3 +14,17 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::prefix('api')->group(function ()
+{
+	Route::prefix('pi')->group(function ()
+	{
+		Route::get('/detection', 'Pi\DetectionController@create');
+	});
+
+	Route::prefix('phone')->group(function ()
+	{
+		Route::post('/detection', 'Pi\DetectionController@create');
+	});
+});

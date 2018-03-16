@@ -16,3 +16,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('pi')->group(function ()
+{
+	Route::get('/detection', 'Pi\DetectionController@create');
+});
+
+Route::prefix('phone')->group(function ()
+{
+	Route::post('/detection', 'Pi\DetectionController@create');
+});
