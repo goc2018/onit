@@ -3,14 +3,40 @@
 namespace App\Http\Controllers\Phone;
 
 use App\Http\Controllers\Controller;
+use App\User;
+use OnIt\Auth\Logic\AuthLogic;
 use Illuminate\Http\Request;
-use OnIt\Registration\Logic\RegistrationLogic;
 
 class AuthController extends Controller
 {
-    public function registration()
+	/**
+	 * @param AuthLogic $authLogic
+	 * @param Request   $request
+	 *
+	 * @return array
+	 */
+    public function login(AuthLogic $authLogic, Request $request)
     {
-	   $foo = new RegistrationLogic();
-	   $foo->foo();
+    	$user = $authLogic->login($request->email);
+
+    	return [
+			'token' => encrypt($user->id),
+		    'user'  => $user
+		];
+    }
+
+	/**
+	 * @param AuthLogic $authLogic
+	 *
+	 * @return array|null
+	 */
+    public function check(AuthLogic $authLogic):? array
+    {
+    	$user = $authLogic->check();
+
+    	return [
+    		'success' => $user !== null,
+		    'user'    => $user
+	    ];
     }
 }

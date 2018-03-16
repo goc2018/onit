@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use OnIt\Auth\Logic\AuthLogic;
+use OnIt\User\Repository\UserRepository;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        $this->app->singleton(AuthLogic::class, function(){
+	        return new AuthLogic(
+	            new UserRepository()
+	        );
+        });
     }
 }
