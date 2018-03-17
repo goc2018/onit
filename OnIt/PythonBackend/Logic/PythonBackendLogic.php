@@ -11,6 +11,7 @@ namespace OnIt\PythonBackend\Logic;
 
 use CURLFile;
 use OnIt\PythonBackend\Repository\PythonBackendRepository;
+use Psr\Http\Message\ResponseInterface;
 
 class PythonBackendLogic
 {
@@ -28,8 +29,23 @@ class PythonBackendLogic
         $this->repository = $repository;
     }
 
+    /**
+     * @param CURLFile $file
+     *
+     * @return ResponseInterface
+     */
     public function detect(CURLFile $file)
     {
         return $this->repository->detect($file);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return mixed|ResponseInterface
+     */
+    public function train(array $data)
+    {
+        return $this->repository->train($data);
     }
 }

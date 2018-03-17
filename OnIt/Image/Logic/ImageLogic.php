@@ -8,6 +8,7 @@
 
 namespace OnIt\Image\Logic;
 
+use App\Models\FaceEncoding;
 use CURLFile;
 use Illuminate\Http\Request;
 use OnIt\PythonBackend\Logic\PythonBackendLogic;
@@ -40,10 +41,34 @@ class ImageLogic
             return false;
         }
 
-        $encoding = array_unshift($encodings);
-
-        return true;
         // Save to database.
-        // Send every [[user_id][encoding]] pair.
+        $encoding = array_unshift($encodings);
+        $this->saveEncoding($encoding);
+
+        // Train.
+        $trainResponse = $this->pythonBackendLogic->train([
+            'user_id' => auth()->id(),
+            'encoding' => $encoding['encoding']
+        ]);
+
+        if ($trainResponse->getStatusCode() !== 200) {
+            // Train failed.
+            return false;
+        }
+
+        // Face trained.
+        return true;
+    }
+
+    /**
+     * @param array $encoding
+     */
+    private function saveEncoding(array $encoding)
+    {
+        $faceEncoding = new FaceEncoding();
+        $faceEncoding->user_id = auth()->id();
+        $faceEncoding->image = $encoding['image'];
+        $faceEncoding->encoding = $encoding['encoding'];
+        $faceEncoding->save();
     }
 }

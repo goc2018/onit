@@ -46,9 +46,18 @@ class PythonBackendRepository
         );
     }
 
-    public function retrain(array $data)
+    /**
+     * @param array $data
+     *
+     * @return mixed|ResponseInterface
+     */
+    public function train(array $data)
     {
-
+        return $this->client->request(
+            'POST',
+            'retrain',
+            json_encode($data)
+        );
     }
 
     public function recognize()
