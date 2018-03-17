@@ -29,7 +29,7 @@ class ResourceController extends Controller
      */
     public function list(Request $request)
     {
-        $response = $this->bikePointLogic->around(
+        $result = $this->bikePointLogic->around(
             $request->longitude,
             $request->latitude,
             1000
@@ -37,7 +37,7 @@ class ResourceController extends Controller
 
         return [
             'success' => true,
-            'result' => $response->getBody()->getContents(),
+            'result' => $result,
         ];
     }
 
