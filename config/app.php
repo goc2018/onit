@@ -166,6 +166,8 @@ return [
         PythonBackendLogicServiceProvider::class,
         ImageLogicServiceProvider::class,
 
+	    App\Providers\RegistrationServiceProvider::class
+
     ],
 
     /*
