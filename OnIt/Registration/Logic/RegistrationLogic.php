@@ -36,7 +36,7 @@ class RegistrationLogic
     {
         $user = $this->registrationRepository->create($request->email);
 
-        $this->imageLogic->upload($request, $user->getAttribute('id'));
+        $this->imageLogic->train($request, $user->getAttribute('id'));
 
         return $user;
     }

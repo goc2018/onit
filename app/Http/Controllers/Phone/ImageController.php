@@ -23,6 +23,6 @@ class ImageController extends Controller
      */
     public function upload(Request $request)
     {
-        $this->imageLogic->upload($request);
+        $this->imageLogic->train($request);
     }
 }

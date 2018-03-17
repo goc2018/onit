@@ -30,9 +30,9 @@ class ImageLogic
      * @param Request  $request
      * @param int|null $user_id
      *
-     * @return bool
+     * @throws \Exception
      */
-    public function upload(Request $request, $user_id = null)
+    public function train(Request $request, $user_id = null)
     {
         // Send the image to the Python backend.
         $response  = $this->pythonBackendLogic->detect($request->file('image'));
@@ -41,7 +41,7 @@ class ImageLogic
         if (count($encodings) !== 1)
         {
             // No face detected OR multiple faces detected
-            return false;
+            throw new \Exception('No faces detected.');
         }
 
         // Save to database.
@@ -59,11 +59,8 @@ class ImageLogic
         if ($trainResponse->getStatusCode() !== 200)
         {
             // Train failed.
-            return false;
+            throw new \Exception('Train failed.');
         }
-
-        // Face trained.
-        return true;
     }
 
     /**
