@@ -55,7 +55,7 @@ class PythonBackendRepository
     {
         return $this->client->request(
             'POST',
-            'retrain',
+            'train',
             json_encode($data)
         );
     }
