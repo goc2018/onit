@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('pi')->group(function ()
 {
 	Route::get('/detection', 'Pi\DetectionController@create');
+    Route::get('/reservations', 'Pi\ReservationController@list');
 });
 
 Route::prefix('phone')->group(function ()
