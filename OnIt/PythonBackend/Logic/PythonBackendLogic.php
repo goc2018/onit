@@ -48,4 +48,14 @@ class PythonBackendLogic
     {
         return $this->repository->train($data);
     }
+
+    /**
+     * @param array $face_encoding
+     *
+     * @return mixed|ResponseInterface
+     */
+    public function recognize(array $face_encoding)
+    {
+        return $this->repository->recognize($face_encoding);
+    }
 }

@@ -55,13 +55,27 @@ class PythonBackendRepository
     {
         return $this->client->request(
             'POST',
-            'retrain',
+            'train',
             json_encode($data)
         );
     }
 
-    public function recognize()
+    /**
+     * @param array $encoding
+     *
+     * @return mixed|ResponseInterface
+     */
+    public function recognize(array $encoding)
     {
-
+        return $this->client->request(
+            'POST',
+            'recognize',
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json'
+                ],
+                'body' => json_encode($encoding),
+            ]
+        );
     }
 }
