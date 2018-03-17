@@ -43,7 +43,7 @@ class RecognitionLogic
             $response = $this->pythonBackendLogic->recognize($face_encoding);
             $userId   = $response->getBody()->getContents();
 
-            if ($reservation->user_id === $userId)
+            if ($reservation->user_id == $userId)
             {
                 return true;
             }
