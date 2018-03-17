@@ -9,7 +9,7 @@
 namespace OnIt\PythonBackend\Logic;
 
 
-use CURLFile;
+use Illuminate\Http\UploadedFile;
 use OnIt\PythonBackend\Repository\PythonBackendRepository;
 use Psr\Http\Message\ResponseInterface;
 
@@ -30,11 +30,11 @@ class PythonBackendLogic
     }
 
     /**
-     * @param CURLFile $file
+     * @param UploadedFile $file
      *
      * @return ResponseInterface
      */
-    public function detect(CURLFile $file)
+    public function detect($file)
     {
         return $this->repository->detect($file);
     }

@@ -8,10 +8,11 @@
 
 namespace OnIt\Image\Logic;
 
+
 use App\Models\FaceEncoding;
-use CURLFile;
 use Illuminate\Http\Request;
 use OnIt\PythonBackend\Logic\PythonBackendLogic;
+
 
 class ImageLogic
 {
@@ -26,32 +27,37 @@ class ImageLogic
     }
 
     /**
-     * @param Request $request
+     * @param Request  $request
+     * @param int|null $user_id
      *
      * @return bool
      */
-    public function upload(Request $request)
+    public function upload(Request $request, $user_id = null)
     {
         // Send the image to the Python backend.
-        $response = $this->pythonBackendLogic->detect(new CURLFile($request->file('image')->getFilename()));
+        $response  = $this->pythonBackendLogic->detect($request->file('image'));
         $encodings = json_decode($response->getBody()->getContents(), true);
 
-        if (count($encodings) !== 1) {
+        if (count($encodings) !== 1)
+        {
             // No face detected OR multiple faces detected
             return false;
         }
 
         // Save to database.
-        $encoding = array_unshift($encodings);
-        $this->saveEncoding($encoding);
+        $encoding = array_shift($encodings);
+        $this->saveEncoding($encoding, $user_id);
 
         // Train.
-        $trainResponse = $this->pythonBackendLogic->train([
-            'user_id' => auth()->id(),
-            'encoding' => $encoding['encoding']
-        ]);
+        $trainResponse = $this->pythonBackendLogic->train(
+            [
+                'user_id'  => $user_id ?? auth()->id(),
+                'encoding' => $encoding['encoding']
+            ]
+        );
 
-        if ($trainResponse->getStatusCode() !== 200) {
+        if ($trainResponse->getStatusCode() !== 200)
+        {
             // Train failed.
             return false;
         }
@@ -61,14 +67,15 @@ class ImageLogic
     }
 
     /**
-     * @param array $encoding
+     * @param array    $encoding
+     * @param int|null $user_id
      */
-    private function saveEncoding(array $encoding)
+    private function saveEncoding(array $encoding, $user_id = null)
     {
-        $faceEncoding = new FaceEncoding();
-        $faceEncoding->user_id = auth()->id();
-        $faceEncoding->image = $encoding['image'];
-        $faceEncoding->encoding = $encoding['encoding'];
+        $faceEncoding           = new FaceEncoding();
+        $faceEncoding->user_id  = $user_id ?? auth()->id();
+        $faceEncoding->image    = $encoding['image'];
+        $faceEncoding->encoding = json_encode($encoding['encoding']);
         $faceEncoding->save();
     }
 }

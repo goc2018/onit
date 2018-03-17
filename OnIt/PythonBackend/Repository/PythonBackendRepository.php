@@ -8,9 +8,10 @@
 
 namespace OnIt\PythonBackend\Repository;
 
-use CURLFile;
 use GuzzleHttp\Client;
+use Illuminate\Http\UploadedFile;
 use Psr\Http\Message\ResponseInterface;
+
 
 class PythonBackendRepository
 {
@@ -25,11 +26,11 @@ class PythonBackendRepository
     }
 
     /**
-     * @param CURLFile $file
+     * @param UploadedFile $file
      *
      * @return ResponseInterface
      */
-    public function detect(CURLFile $file)
+    public function detect($file)
     {
         return $this->client->request(
             'POST',
@@ -39,7 +40,8 @@ class PythonBackendRepository
                     [
                         [
                             'name' => 'file',
-                            'contents' => fopen($file->getFilename(), 'r')
+                            'contents' => file_get_contents($file->path()),
+                            'filename' => 'file.jpg'
                         ]
                     ]
             ]
@@ -56,7 +58,13 @@ class PythonBackendRepository
         return $this->client->request(
             'POST',
             'train',
-            json_encode($data)
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json'
+                ],
+                'body' => json_encode($data),
+            ]
+
         );
     }
 
