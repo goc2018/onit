@@ -135,7 +135,9 @@ def recognize_faces(faces_encodings):
     # Predict classes and remove classifications that aren't within the threshold
     predictions = [pred if rec else "unknown" for pred, rec in zip(CLASSIFIER.predict(faces_encodings), are_matches)]
 
-    return predictions[0]
+    print("Preditcted: {}".format(predictions[0]))
+
+    return str(predictions[0])
 
 
 def extract_faces_from_image(file_name, file_stream):
