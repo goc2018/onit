@@ -166,6 +166,7 @@ def get_face_encoding(image):
     return face_recognition.face_encodings(np.array(image), known_face_locations=[[0, height, width, 0]])[0]
 
 
+# TODO move encoding extraction out of here!
 def base64_faces(faces):
     base64_encoded_faces = {}
     buffered = BytesIO()
