@@ -33,6 +33,7 @@ class BikePointRepository
     public function around(float $longitude, float $latitude, float $radiusMeter)
     {
         $uriParts = [
+            self::BASE_URI,
             'around',
             $longitude,
             $latitude,

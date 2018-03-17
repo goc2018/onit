@@ -19,11 +19,7 @@ class BikePointLogicServiceProvider extends ServiceProvider
         $this->app->singleton(BikePointLogic::class, function () {
             return new BikePointLogic(
                 new BikePointRepository(
-                    new Client(
-                        [
-                            'base_uri' => BikePointRepository::BASE_URI
-                        ]
-                    )
+                    new Client()
                 )
             );
         });

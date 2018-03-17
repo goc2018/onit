@@ -29,13 +29,15 @@ class ResourceController extends Controller
      */
     public function list(Request $request)
     {
+        $response = $this->bikePointLogic->around(
+            $request->longitude,
+            $request->latitude,
+            1000
+        );
+
         return [
             'success' => true,
-            'result' => $this->bikePointLogic->around(
-                $request->longitude,
-                $request->latitude,
-                1000
-            )
+            'result' => $response->getBody()->getContents(),
         ];
     }
 
