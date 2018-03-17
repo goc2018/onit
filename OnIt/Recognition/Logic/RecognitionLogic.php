@@ -36,7 +36,7 @@ class RecognitionLogic
             $response = $this->pythonBackendLogic->recognize($face_encoding);
             $userId = $response->getBody()->getContents();
 
-            dd($userId);
+            var_export($userId);
 
             if ($userId === 'unknown') {
                 continue;
