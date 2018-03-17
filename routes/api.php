@@ -30,4 +30,6 @@ Route::prefix('phone')->group(function ()
 	Route::get('/auth/check', 'Phone\AuthController@check');
 	Route::get('/registration', 'Phone\AuthController@registration');
     Route::post('/image', 'Phone\ImageController@upload');
+    Route::get('/resources', 'Phone\ResourceController@list');
+    Route::post('/resources', 'Phone\ResourceController@reserve');
 });

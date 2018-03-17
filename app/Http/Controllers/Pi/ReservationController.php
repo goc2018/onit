@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 
+
 class ReservationController extends Controller
 {
     public function list(Request $request)
