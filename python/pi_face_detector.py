@@ -272,7 +272,7 @@ def main():
 
         detectiontime = current_date_for_filename()
 
-        save_detected_faces_to_files(full_image, face_locations, detectiontime, face_encodings)
+        #save_detected_faces_to_files(full_image, face_locations, detectiontime, face_encodings)
 
         ##### SEND face_encoding..........
         recogresult = sendEncoding(np.array(face_encodings).tolist())
