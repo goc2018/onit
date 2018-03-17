@@ -1,5 +1,8 @@
 <?php
 
+use App\Providers\ImageLogicServiceProvider;
+use App\Providers\PythonBackendLogicServiceProvider;
+
 return [
 
     /*
@@ -159,6 +162,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        PythonBackendLogicServiceProvider::class,
+        ImageLogicServiceProvider::class,
 
     ],
 
