@@ -5,6 +5,7 @@ namespace OnIt\Registration\Logic;
 
 use App\User;
 use App\Http\Requests\RegistrationRequest;
+use Illuminate\Support\Facades\DB;
 use OnIt\Image\Logic\ImageLogic;
 use OnIt\Registration\Repository\RegistrationRepository;
 
@@ -31,13 +32,28 @@ class RegistrationLogic
      * @param RegistrationRequest $request
      *
      * @return User
+     *
+     * @throws \Exception
      */
     public function register(RegistrationRequest $request): User
     {
-        $user = $this->registrationRepository->create($request->email);
+        DB::beginTransaction();
 
-        $this->imageLogic->train($request, $user->getAttribute('id'));
+        try
+        {
+            $user = $this->registrationRepository->create($request->email);
 
-        return $user;
+            $this->imageLogic->train($request, $user->getAttribute('id'));
+
+            DB::commit();
+
+            return $user;
+        }
+        catch (\Exception $ex)
+        {
+            DB::rollBack();
+
+            throw $ex;
+        }
     }
 }
