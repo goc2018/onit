@@ -9,7 +9,9 @@
 namespace OnIt\Recognition\Logic;
 
 
+use App\Models\Reservation;
 use OnIt\PythonBackend\Logic\PythonBackendLogic;
+
 
 class RecognitionLogic
 {
@@ -19,7 +21,6 @@ class RecognitionLogic
     private $pythonBackendLogic;
 
     /**
-     * RecognitionLogic constructor.
      * @param PythonBackendLogic $pythonBackendLogic
      */
     public function __construct(PythonBackendLogic $pythonBackendLogic)
@@ -28,19 +29,24 @@ class RecognitionLogic
     }
 
     /**
-     * @param array $encoding
+     * @param array $face_encodings
+     * @param int   $resource_id
+     *
+     * @return bool
      */
-    public function recognize(array $face_encodings)
+    public function recognize(array $face_encodings, int $resource_id)
     {
-        foreach ($face_encodings as $face_encoding) {
+        $reservation = Reservation::where('resource_id', $resource_id)->first();
+
+        foreach ($face_encodings as $face_encoding)
+        {
             $response = $this->pythonBackendLogic->recognize($face_encoding);
-            $userId = $response->getBody()->getContents();
+            $userId   = $response->getBody()->getContents();
 
-            if ($userId === 'unknown') {
-                continue;
+            if ($reservation->user_id === $userId)
+            {
+                return true;
             }
-
-            return true;
         }
 
         return false;

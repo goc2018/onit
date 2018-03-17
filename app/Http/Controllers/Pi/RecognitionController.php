@@ -23,12 +23,17 @@ class RecognitionController extends Controller
 
     /**
      * @param Request $request
+     *
+     * @return array
      */
     public function recognize(Request $request)
     {
         return [
             'success' => true,
-            'result' => $this->recognitionLogic->recognize($request->face_encodings)
+            'result' => $this->recognitionLogic->recognize(
+                $request->face_encodings,
+                $request->resource_id
+            )
         ];
     }
 }
