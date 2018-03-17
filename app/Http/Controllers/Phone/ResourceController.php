@@ -3,17 +3,39 @@
 namespace App\Http\Controllers\Phone;
 
 use App\Http\Controllers\Controller;
-use App\Models\Resource;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use OnIt\BikePoint\Logic\BikePointLogic;
 
 class ResourceController extends Controller
 {
-    public function list()
+    /**
+     * @var BikePointLogic
+     */
+    private $bikePointLogic;
+
+    /**
+     * @param BikePointLogic $bikePointLogic
+     */
+    public function __construct(BikePointLogic $bikePointLogic)
+    {
+        $this->bikePointLogic = $bikePointLogic;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function list(Request $request)
     {
         return [
             'success' => true,
-            'result' => Resource::all()
+            'result' => $this->bikePointLogic->around(
+                $request->longitude,
+                $request->latitude,
+                1000
+            )
         ];
     }
 
