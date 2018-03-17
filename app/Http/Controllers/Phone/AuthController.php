@@ -18,11 +18,11 @@ class AuthController extends Controller
     public function login(AuthLogic $authLogic, Request $request)
     {
     	$user = $authLogic->login($request->email);
-
     	return [
-			'token' => encrypt($user->id),
-		    'user'  => $user
-		];
+			'token'   => encrypt($user->id),
+		    'user'    => $user,
+		    'success' => true
+ 		];
     }
 
 	/**
