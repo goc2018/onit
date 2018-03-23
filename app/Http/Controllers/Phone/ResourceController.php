@@ -30,8 +30,8 @@ class ResourceController extends Controller
     public function list(Request $request)
     {
         $result = $this->bikePointLogic->around(
-            $request->longitude,
-            $request->latitude,
+            49.600512,//$request->longitude,
+            6.11144,//$request->latitude,
             1000
         );
 
